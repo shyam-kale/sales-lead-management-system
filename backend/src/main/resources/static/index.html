@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Lead Management System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Sales Lead System</h2>
+                <p class="sidebar-subtitle">CRM Platform</p>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-btn active" data-view="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span>
+                </button>
+                <button class="nav-btn" data-view="leads">
+                    <span class="nav-icon">👥</span>
+                    <span class="nav-text">Leads</span>
+                    <span class="nav-badge" id="leads-badge">0</span>
+                </button>
+                <button class="nav-btn" data-view="deals">
+                    <span class="nav-icon">💼</span>
+                    <span class="nav-text">Deals</span>
+                    <span class="nav-badge" id="deals-badge">0</span>
+                </button>
+                <button class="nav-btn" data-view="tasks">
+                    <span class="nav-icon">✓</span>
+                    <span class="nav-text">Tasks</span>
+                    <span class="nav-badge" id="tasks-badge">0</span>
+                </button>
+                <button class="nav-btn" data-view="activities">
+                    <span class="nav-icon">📝</span>
+                    <span class="nav-text">Activities</span>
+                </button>
+                <button class="nav-btn" data-view="analytics">
+                    <span class="nav-icon">📈</span>
+                    <span class="nav-text">Analytics</span>
+                </button>
+                <button class="nav-btn" data-view="reports">
+                    <span class="nav-icon">📄</span>
+                    <span class="nav-text">Reports</span>
+                </button>
+                <button class="nav-btn" data-view="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-text">Settings</span>
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="status-indicator">
+                    <span class="status-dot online"></span>
+                    <span>Connected</span>
+                </div>
+                <div class="user-info">
+                    <span class="user-name">Admin User</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1 id="page-title">Dashboard</h1>
+                    <div class="breadcrumb" id="breadcrumb"></div>
+                </div>
+                <div class="header-actions">
+                    <div class="search-box">
+                        <input type="text" placeholder="Search everything..." id="global-search" onkeyup="app.globalSearch()">
+                    </div>
+                    <button class="btn-icon" onclick="app.refresh()" title="Refresh">
+                        <span>🔄</span>
+                    </button>
+                    <button class="btn-icon" onclick="app.showNotifications()" title="Notifications">
+                        <span>🔔</span>
+                        <span class="notification-badge" id="notification-count">0</span>
+                    </button>
+                    <span class="data-count" id="data-count"></span>
+                </div>
+            </header>
+
+            <div class="content-area" id="content-area">
+                <!-- Dynamic content will be loaded here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="charts.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

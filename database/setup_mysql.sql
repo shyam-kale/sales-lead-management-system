@@ -20,10 +20,10 @@ INSERT INTO user_profiles (
     working_hours_start, working_hours_end, timezone, working_days,
     total_logins, created_at, updated_at
 ) VALUES (
-    @user_id, 'John', 'Doe', '+1 (555) 123-4567', 'Sales Manager', 'Sales', 
-    'New York, NY', 'Experienced sales professional with 5+ years in lead management and customer acquisition.',
+    @user_id, 'Rajesh', 'Patil', '+91 98765 43210', 'Sales Manager', 'Sales', 
+    'Mumbai, Maharashtra', 'Experienced sales professional with 5+ years in lead management.',
     TRUE, FALSE, TRUE, FALSE,
-    '09:00:00', '17:00:00', 'America/New_York', '["Monday","Tuesday","Wednesday","Thursday","Friday"]',
+    '09:00:00', '17:00:00', 'Asia/Kolkata', '["Monday","Tuesday","Wednesday","Thursday","Friday"]',
     342, NOW(), NOW()
 ) ON DUPLICATE KEY UPDATE updated_at = NOW();
 
@@ -39,7 +39,7 @@ INSERT INTO user_settings (user_id, setting_key, setting_value, setting_type, cr
 (@user_id, 'appName', 'Sales Lead Management System', 'string', NOW(), NOW()),
 (@user_id, 'theme', 'light', 'string', NOW(), NOW()),
 (@user_id, 'language', 'en', 'string', NOW(), NOW()),
-(@user_id, 'timezone', 'UTC', 'string', NOW(), NOW()),
+(@user_id, 'timezone', 'Asia/Kolkata', 'string', NOW(), NOW()),
 (@user_id, 'defaultView', 'dashboard', 'string', NOW(), NOW()),
 (@user_id, 'refreshInterval', '30', 'integer', NOW(), NOW()),
 (@user_id, 'showNotifications', 'true', 'boolean', NOW(), NOW()),
@@ -54,29 +54,39 @@ INSERT INTO user_settings (user_id, setting_key, setting_value, setting_type, cr
 (@user_id, 'dealNotifications', 'true', 'boolean', NOW(), NOW())
 ON DUPLICATE KEY UPDATE updated_at = NOW();
 
--- Insert sample leads
+-- Insert Maharashtrian leads
 INSERT INTO leads (name, email, phone, company, status, source, assigned_to, notes, score, created_at, updated_at) VALUES
-('Alice Johnson', 'alice.johnson@techcorp.com', '+1 (555) 234-5678', 'TechCorp Inc.', 'NEW', 'Website', @user_id, 'Interested in enterprise solution', 85, NOW(), NOW()),
-('Bob Smith', 'bob.smith@innovate.com', '+1 (555) 345-6789', 'Innovate LLC', 'CONTACTED', 'Referral', @user_id, 'Follow up scheduled for next week', 70, NOW(), NOW()),
-('Carol Davis', 'carol.davis@startup.io', '+1 (555) 456-7890', 'Startup.io', 'QUALIFIED', 'LinkedIn', @user_id, 'Ready for demo presentation', 95, NOW(), NOW()),
-('David Wilson', 'david.wilson@bigcorp.com', '+1 (555) 567-8901', 'BigCorp', 'NEW', 'Cold Call', @user_id, 'Initial contact made', 60, NOW(), NOW()),
-('Eva Brown', 'eva.brown@solutions.net', '+1 (555) 678-9012', 'Solutions.net', 'CONTACTED', 'Trade Show', @user_id, 'Requested pricing information', 75, NOW(), NOW())
+('Priya Deshmukh', 'priya.deshmukh@techcorp.in', '+91 98765 43210', 'TechCorp Pune', 'NEW', 'Website', @user_id, 'Interested in enterprise solution', 85, NOW(), NOW()),
+('Rahul Patil', 'rahul.patil@innovate.in', '+91 98765 43211', 'Innovate Mumbai', 'CONTACTED', 'Referral', @user_id, 'Follow up scheduled', 70, NOW(), NOW()),
+('Sneha Kulkarni', 'sneha.kulkarni@startup.in', '+91 98765 43212', 'Startup Nagpur', 'QUALIFIED', 'LinkedIn', @user_id, 'Ready for demo', 95, NOW(), NOW()),
+('Amit Joshi', 'amit.joshi@bigcorp.in', '+91 98765 43213', 'BigCorp Nashik', 'NEW', 'Cold Call', @user_id, 'Initial contact made', 60, NOW(), NOW()),
+('Pooja Sharma', 'pooja.sharma@solutions.in', '+91 98765 43214', 'Solutions Aurangabad', 'CONTACTED', 'Trade Show', @user_id, 'Requested pricing', 75, NOW(), NOW()),
+('Vikram Pawar', 'vikram.pawar@enterprises.in', '+91 98765 43215', 'Enterprises Kolhapur', 'NEW', 'Website', @user_id, 'Looking for CRM', 80, NOW(), NOW()),
+('Anjali Bhosale', 'anjali.bhosale@techsol.in', '+91 98765 43216', 'TechSol Solapur', 'QUALIFIED', 'Referral', @user_id, 'Budget approved', 90, NOW(), NOW()),
+('Sanjay Jadhav', 'sanjay.jadhav@infotech.in', '+91 98765 43217', 'Infotech Satara', 'CONTACTED', 'Email Campaign', @user_id, 'Interested in demo', 65, NOW(), NOW()),
+('Manisha Shinde', 'manisha.shinde@digital.in', '+91 98765 43218', 'Digital Sangli', 'NEW', 'LinkedIn', @user_id, 'Initial inquiry', 70, NOW(), NOW()),
+('Rajesh Kale', 'rajesh.kale@systems.in', '+91 98765 43219', 'Systems Ahmednagar', 'QUALIFIED', 'Website', @user_id, 'Ready to close', 95, NOW(), NOW()),
+('Kavita Desai', 'kavita.desai@solutions.in', '+91 98765 43220', 'Solutions Thane', 'NEW', 'Referral', @user_id, 'New inquiry', 55, NOW(), NOW()),
+('Suresh Mane', 'suresh.mane@tech.in', '+91 98765 43221', 'Tech Latur', 'CONTACTED', 'Website', @user_id, 'Follow up needed', 68, NOW(), NOW()),
+('Deepak Rao', 'deepak.rao@corp.in', '+91 98765 43222', 'Corp Nanded', 'QUALIFIED', 'LinkedIn', @user_id, 'High potential', 88, NOW(), NOW()),
+('Swati Ghosh', 'swati.ghosh@enterprises.in', '+91 98765 43223', 'Enterprises Jalgaon', 'NEW', 'Cold Call', @user_id, 'Initial discussion', 62, NOW(), NOW()),
+('Nitin Wagh', 'nitin.wagh@digital.in', '+91 98765 43224', 'Digital Akola', 'CONTACTED', 'Trade Show', @user_id, 'Proposal sent', 77, NOW(), NOW())
 ON DUPLICATE KEY UPDATE updated_at = NOW();
 
 -- Get lead IDs for deals
-SET @lead1_id = (SELECT id FROM leads WHERE email = 'alice.johnson@techcorp.com' LIMIT 1);
-SET @lead2_id = (SELECT id FROM leads WHERE email = 'bob.smith@innovate.com' LIMIT 1);
-SET @lead3_id = (SELECT id FROM leads WHERE email = 'carol.davis@startup.io' LIMIT 1);
-SET @lead4_id = (SELECT id FROM leads WHERE email = 'david.wilson@bigcorp.com' LIMIT 1);
-SET @lead5_id = (SELECT id FROM leads WHERE email = 'eva.brown@solutions.net' LIMIT 1);
+SET @lead1_id = (SELECT id FROM leads WHERE email = 'priya.deshmukh@techcorp.in' LIMIT 1);
+SET @lead2_id = (SELECT id FROM leads WHERE email = 'rahul.patil@innovate.in' LIMIT 1);
+SET @lead3_id = (SELECT id FROM leads WHERE email = 'sneha.kulkarni@startup.in' LIMIT 1);
+SET @lead4_id = (SELECT id FROM leads WHERE email = 'amit.joshi@bigcorp.in' LIMIT 1);
+SET @lead5_id = (SELECT id FROM leads WHERE email = 'pooja.sharma@solutions.in' LIMIT 1);
 
 -- Insert sample deals
 INSERT INTO deals (title, description, amount, stage, probability, expected_close_date, lead_id, assigned_to, notes, created_at, updated_at) VALUES
-('TechCorp Enterprise License', 'Annual enterprise software license for 500 users', 125000.00, 'PROPOSAL', 75, DATE_ADD(CURDATE(), INTERVAL 30 DAY), @lead1_id, @user_id, 'Proposal sent, awaiting decision', NOW(), NOW()),
-('Innovate Consulting Package', 'Six-month consulting engagement', 85000.00, 'QUALIFIED', 60, DATE_ADD(CURDATE(), INTERVAL 45 DAY), @lead2_id, @user_id, 'Budget approved, finalizing scope', NOW(), NOW()),
-('Startup.io Implementation', 'Custom implementation and training', 45000.00, 'CLOSED', 100, CURDATE(), @lead3_id, @user_id, 'Deal closed successfully', NOW(), NOW()),
-('BigCorp Pilot Program', 'Three-month pilot program', 25000.00, 'NEW', 30, DATE_ADD(CURDATE(), INTERVAL 60 DAY), @lead4_id, @user_id, 'Initial discussions ongoing', NOW(), NOW()),
-('Solutions.net Integration', 'API integration and setup', 35000.00, 'PROPOSAL', 50, DATE_ADD(CURDATE(), INTERVAL 21 DAY), @lead5_id, @user_id, 'Technical requirements being reviewed', NOW(), NOW())
+('TechCorp Enterprise License', 'Annual enterprise software license', 125000.00, 'PROPOSAL', 75, DATE_ADD(CURDATE(), INTERVAL 30 DAY), @lead1_id, @user_id, 'Proposal sent', NOW(), NOW()),
+('Innovate Consulting Package', 'Six-month consulting engagement', 85000.00, 'QUALIFIED', 60, DATE_ADD(CURDATE(), INTERVAL 45 DAY), @lead2_id, @user_id, 'Budget approved', NOW(), NOW()),
+('Startup Implementation', 'Custom implementation and training', 45000.00, 'CLOSED', 100, CURDATE(), @lead3_id, @user_id, 'Deal closed', NOW(), NOW()),
+('BigCorp Pilot Program', 'Three-month pilot program', 25000.00, 'NEW', 30, DATE_ADD(CURDATE(), INTERVAL 60 DAY), @lead4_id, @user_id, 'Initial discussions', NOW(), NOW()),
+('Solutions Integration', 'API integration and setup', 35000.00, 'PROPOSAL', 50, DATE_ADD(CURDATE(), INTERVAL 21 DAY), @lead5_id, @user_id, 'Technical review', NOW(), NOW())
 ON DUPLICATE KEY UPDATE updated_at = NOW();
 
 -- Insert sample activities

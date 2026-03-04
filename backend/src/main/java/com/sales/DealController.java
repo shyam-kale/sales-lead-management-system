@@ -7,7 +7,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/deals")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class DealController {
 
     private final DealRepository dealRepository;
@@ -29,6 +29,31 @@ public class DealController {
                     deal.setLead(lead);
                     Deal savedDeal = dealRepository.save(deal);
                     return ResponseEntity.ok(savedDeal);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // Create a new deal without lead
+    @PostMapping
+    public ResponseEntity<Deal> createDealWithoutLead(@RequestBody Deal deal) {
+        Deal savedDeal = dealRepository.save(deal);
+        return ResponseEntity.ok(savedDeal);
+    }
+
+    // Update deal
+    @PutMapping("/{id}")
+    public ResponseEntity<Deal> updateDeal(@PathVariable Long id, @RequestBody Deal dealDetails) {
+        return dealRepository.findById(id)
+                .map(deal -> {
+                    deal.setTitle(dealDetails.getTitle());
+                    deal.setDescription(dealDetails.getDescription());
+                    deal.setAmount(dealDetails.getAmount());
+                    deal.setStage(dealDetails.getStage());
+                    deal.setProbability(dealDetails.getProbability());
+                    deal.setExpectedCloseDate(dealDetails.getExpectedCloseDate());
+                    deal.setNotes(dealDetails.getNotes());
+                    Deal updated = dealRepository.save(deal);
+                    return ResponseEntity.ok(updated);
                 })
                 .orElse(ResponseEntity.notFound().build());
     }

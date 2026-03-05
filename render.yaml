@@ -1,5 +1,4 @@
 services:
-  # Web Service (Spring Boot App)
   - type: web
     name: sales-lead-system
     env: docker
@@ -7,7 +6,6 @@ services:
     dockerContext: ./backend
     plan: free
     region: singapore
-    healthCheckPath: /
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -21,7 +19,6 @@ services:
         value: org.hibernate.dialect.PostgreSQLDialect
 
 databases:
-  # PostgreSQL Database (Free)
   - name: sales-lead-db
     databaseName: sales_lead_db
     user: sales_user

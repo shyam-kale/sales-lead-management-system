@@ -1,24 +1,28 @@
 package com.sales.config;
 
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.env.Environment;
 
 import javax.sql.DataSource;
+import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 public class RenderDatabaseConfig {
 
+    private final Environment env;
+
+    public RenderDatabaseConfig(Environment env) {
+        this.env = env;
+    }
+
     @Bean
     @Primary
-    @ConfigurationProperties("spring.datasource")
-    public DataSourceProperties dataSourceProperties() {
-        DataSourceProperties properties = new DataSourceProperties();
+    public DataSource dataSource() {
+        String databaseUrl = env.getProperty("DATABASE_URL");
         
-        // Get DATABASE_URL from environment
-        String databaseUrl = System.getenv("DATABASE_URL");
+        HikariDataSource dataSource = new HikariDataSource();
         
         if (databaseUrl != null && databaseUrl.startsWith("postgres://")) {
             // Parse postgres://user:pass@host:port/db
@@ -37,19 +41,26 @@ public class RenderDatabaseConfig {
                 // Build JDBC URL
                 String jdbcUrl = "jdbc:postgresql://" + hostPort + "/" + database;
                 
-                properties.setUrl(jdbcUrl);
-                properties.setUsername(username);
-                properties.setPassword(password);
-                properties.setDriverClassName("org.postgresql.Driver");
+                dataSource.setJdbcUrl(jdbcUrl);
+                dataSource.setUsername(username);
+                dataSource.setPassword(password);
+                dataSource.setDriverClassName("org.postgresql.Driver");
             }
+        } else {
+            // Use default MySQL configuration
+            dataSource.setJdbcUrl(env.getProperty("spring.datasource.url", "jdbc:mysql://localhost:3306/sales_lead_db"));
+            dataSource.setUsername(env.getProperty("spring.datasource.username", "root"));
+            dataSource.setPassword(env.getProperty("spring.datasource.password", "Root@1234"));
+            dataSource.setDriverClassName(env.getProperty("spring.datasource.driver-class-name", "com.mysql.cj.jdbc.Driver"));
         }
         
-        return properties;
-    }
-
-    @Bean
-    @Primary
-    public DataSource dataSource(DataSourceProperties properties) {
-        return properties.initializeDataSourceBuilder().build();
+        // Connection pool settings
+        dataSource.setMaximumPoolSize(5);
+        dataSource.setMinimumIdle(2);
+        dataSource.setConnectionTimeout(20000);
+        dataSource.setIdleTimeout(300000);
+        dataSource.setMaxLifetime(600000);
+        
+        return dataSource;
     }
 }
